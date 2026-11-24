@@ -100,7 +100,14 @@
             </li>
             <li>
               <h3>Divide como quieras</h3>
-              <p>En partes iguales, por monto libre, por productos y fracciones, o pagando toda la cuenta.</p>
+              <p>Elige cualquiera de las cuatro modalidades, según cómo quieras pagar:</p>
+              <div class="how-payment-modes" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:14px">
+                <a href="#demo" data-preview-mode="equal" style="display:block;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:12px;text-decoration:none"><strong style="color:var(--purple-deep)">Partes iguales</strong><small style="display:block;color:var(--muted);margin-top:4px">Reparte la cuenta entre los comensales.</small></a>
+                <a href="#demo" data-preview-mode="free" style="display:block;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:12px;text-decoration:none"><strong style="color:var(--purple-deep)">Monto libre</strong><small style="display:block;color:var(--muted);margin-top:4px">Ingresa el monto que deseas pagar.</small></a>
+                <a href="#demo" data-preview-mode="mine" style="display:block;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:12px;text-decoration:none"><strong style="color:var(--purple-deep)">Personalizado</strong><small style="display:block;color:var(--muted);margin-top:4px">Selecciona productos y divide platos en hasta 8 fracciones.</small></a>
+                <a href="#demo" data-preview-mode="all" style="display:block;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:12px;text-decoration:none"><strong style="color:var(--purple-deep)">Invitar</strong><small style="display:block;color:var(--muted);margin-top:4px">Paga toda la cuenta pendiente.</small></a>
+              </div>
+              <p style="font-size:.8rem;margin-top:8px">Selecciona una modalidad para probarla en el simulador.</p>
             </li>
             <li>
               <h3>Paga y recibe tu boleta</h3>
@@ -216,5 +223,14 @@
   </footer>
 
   <script src="script.js?v=4"></script>
+<script>
+document.querySelectorAll('[data-preview-mode]').forEach(function(link){
+  link.addEventListener('click',function(){
+    var mode=link.dataset.previewMode;
+    var target=document.querySelector('#demo .seg[data-mode="'+mode+'"]');
+    if(target)target.click();
+  });
+});
+</script>
 </body>
 </html>
