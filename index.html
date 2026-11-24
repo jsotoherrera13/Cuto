@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
 
@@ -47,7 +47,9 @@
 
         <div class="segmented" role="group" aria-label="Cómo quieres pagar">
           <button type="button" class="seg is-on" data-mode="equal" aria-pressed="true">Partes iguales</button>
-          <button type="button" class="seg" data-mode="mine" aria-pressed="false">Solo lo mío</button>
+          <button type="button" class="seg" data-mode="free" aria-pressed="false">Monto libre</button>
+          <button type="button" class="seg" data-mode="mine" aria-pressed="false">Personalizado</button>
+          <button type="button" class="seg" data-mode="all" aria-pressed="false">Invitar</button>
         </div>
 
         <ul class="dishes" id="dishes" aria-label="Consumos de la mesa"></ul>
@@ -61,14 +63,20 @@
           </div>
         </div>
 
-        <label class="tip">
-          <input type="checkbox" id="tip" checked>
-          <span>Agregar propina sugerida (10%) para tu garzón</span>
-          <strong id="tip-amount">$1.185</strong>
-        </label>
+        <div id="free-row" class="free-row" hidden>
+          <label for="free-amount">¿Cuánto quieres pagar?</label>
+          <div class="currency-field"><span>$</span><input id="free-amount" type="number" min="0" max="47400" step="1" inputmode="numeric" placeholder="Ingresa un monto"></div>
+          <small>Hasta $47.400, sin incluir propina.</small>
+        </div>
+        <p id="invite-note" class="invite-note" hidden>¡Tú invitas! Pagarás la cuenta completa de la mesa.</p>
+        <div class="tip-summary">
+          <div class="tip-line"><span>Tu consumo</span><strong id="base-amount">$11.850</strong></div>
+          <div class="tip-line"><span id="tip-label">Propina voluntaria (10%)</span><strong id="tip-amount">$1.185</strong></div>
+          <details class="tip-edit"><summary>Editar propina</summary><label for="tip-rate">Porcentaje de propina</label><select id="tip-rate"><option value="0">Sin propina (0%)</option><option value="10" selected>10% sugerido</option><option value="15">15%</option><option value="20">20%</option></select></details>
+        </div>
 
         <div class="summary">
-          <span>Tu parte</span>
+          <span>Total a pagar</span>
           <strong id="part">$13.035</strong>
         </div>
 
@@ -92,7 +100,7 @@
             </li>
             <li>
               <h3>Divide como quieras</h3>
-              <p>En partes iguales, solo tus consumos, un monto libre o la cuenta completa de la mesa.</p>
+              <p>En partes iguales, por monto libre, por productos y fracciones, o pagando toda la cuenta.</p>
             </li>
             <li>
               <h3>Paga y recibe tu boleta</h3>
@@ -116,15 +124,15 @@
           <p>El saldo pendiente se reparte entre todos los que están en la mesa.</p>
         </article>
         <article>
-          <h3>Solo lo mío</h3>
-          <p>Marcas lo que consumiste y pagas exactamente eso.</p>
+          <h3>Personalizado</h3>
+          <p>Selecciona tus consumos y divide cada plato compartido en hasta ocho fracciones.</p>
         </article>
         <article>
           <h3>Monto libre</h3>
           <p>Abonas lo que quieras y el resto queda para los demás.</p>
         </article>
         <article>
-          <h3>Cuenta completa</h3>
+          <h3>Invitar</h3>
           <p>Si invitas tú, pagas toda la mesa de una vez.</p>
         </article>
       </div>
@@ -207,6 +215,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>
