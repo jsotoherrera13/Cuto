@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>split</title>
+  <meta name="description" content="Escanea el QR de tu mesa, revisa la cuenta en tiempo real y paga tu parte desde el celular. Sin descargar ninguna app.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="wordmark" href="#inicio" aria-label="split, ir al inicio">spl<span class="dotless">ı</span>t</a>
+      <nav aria-label="Principal">
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#comensales">Para comensales</a>
+        <a href="#restaurantes">Para restaurantes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <h1>
+          <span class="line">Pide. Paga. Divide.</span>
+          <span class="line accent">Así de simple.</span>
+        </h1>
+        <p class="lead">Escanea el QR de tu mesa y paga tu parte desde el celular. Sin descargar ninguna app y sin esperar a que llegue el garzón con la cuenta.</p>
+        <p class="hint">Prueba la cuenta de la derecha: cambia cómo se divide y mira cuánto te toca.</p>
+      </div>
+
+      <div class="demo" id="demo" data-mode="equal" aria-label="Demo de cómo se divide una cuenta">
+        <div class="demo-head">
+          <div>
+            <p class="demo-table">Mesa 12</p>
+            <p class="demo-sub">Tu orden, en tiempo real</p>
+          </div>
+          <p class="demo-total"><span>Total mesa</span><strong id="demo-full">$47.400</strong></p>
+        </div>
+
+        <div class="segmented" role="group" aria-label="Cómo quieres pagar">
+          <button type="button" class="seg is-on" data-mode="equal" aria-pressed="true">Partes iguales</button>
+          <button type="button" class="seg" data-mode="mine" aria-pressed="false">Solo lo mío</button>
+        </div>
+
+        <ul class="dishes" id="dishes" aria-label="Consumos de la mesa"></ul>
+
+        <div class="stepper-row" id="stepper-row">
+          <span id="people-label">Personas en la mesa</span>
+          <div class="stepper">
+            <button type="button" id="minus" aria-label="Una persona menos">−</button>
+            <output id="people" aria-labelledby="people-label">4</output>
+            <button type="button" id="plus" aria-label="Una persona más">+</button>
+          </div>
+        </div>
+
+        <label class="tip">
+          <input type="checkbox" id="tip" checked>
+          <span>Agregar propina sugerida (10%) para tu garzón</span>
+          <strong id="tip-amount">$1.185</strong>
+        </label>
+
+        <div class="summary">
+          <span>Tu parte</span>
+          <strong id="part">$13.035</strong>
+        </div>
+
+        <button type="button" class="pay" id="pay">Pagar $13.035</button>
+        <p class="secure">Pago seguro con tarjeta, Apple Pay, Google Pay o Mercado Pago</p>
+      </div>
+    </section>
+
+    <section class="section wrap" id="como-funciona">
+      <div class="how">
+        <div class="how-copy">
+          <h2>Del QR al comprobante en cuatro pasos</h2>
+          <ol class="steps">
+            <li>
+              <h3>Escanea el QR</h3>
+              <p>Está en tu mesa. Se abre en el navegador del celular, sin instalar nada.</p>
+            </li>
+            <li>
+              <h3>Revisa tu orden</h3>
+              <p>Ves la cuenta tal como figura en el sistema del local, y se actualiza si piden algo más.</p>
+            </li>
+            <li>
+              <h3>Divide como quieras</h3>
+              <p>En partes iguales, solo tus consumos, un monto libre o la cuenta completa de la mesa.</p>
+            </li>
+            <li>
+              <h3>Paga y recibe tu boleta</h3>
+              <p>Pagas con el medio digital que prefieras y la boleta llega a tu correo.</p>
+            </li>
+          </ol>
+        </div>
+        <figure class="how-figure">
+          <img src="assets/pantallas-split.jpg" width="853" height="1280" loading="lazy"
+               alt="Las pantallas de split: escanear el QR de la mesa, revisar la orden, dividir la cuenta, elegir el medio de pago, pago realizado y comprobante.">
+        </figure>
+      </div>
+    </section>
+
+    <section class="section wrap" id="comensales">
+      <div class="split-head">
+        <h2>Cada persona paga a su manera</h2>
+        <p>Nadie tiene que sacar la calculadora ni adelantar plata para después cobrarla.</p>
+      </div>
+
+      <div class="modes">
+        <article>
+          <h3>Partes iguales</h3>
+          <p>El saldo pendiente se reparte entre todos los que están en la mesa.</p>
+        </article>
+        <article>
+          <h3>Solo lo mío</h3>
+          <p>Marcas lo que consumiste y pagas exactamente eso.</p>
+        </article>
+        <article>
+          <h3>Monto libre</h3>
+          <p>Abonas lo que quieras y el resto queda para los demás.</p>
+        </article>
+        <article>
+          <h3>Cuenta completa</h3>
+          <p>Si invitas tú, pagas toda la mesa de una vez.</p>
+        </article>
+      </div>
+
+      <ul class="extras">
+        <li>
+          <h3>Platos compartidos</h3>
+          <p>Una entrada o una pizza para varios se fracciona entre quienes la comieron.</p>
+        </li>
+        <li>
+          <h3>Propina al garzón correcto</h3>
+          <p>Te sugiere la propina y queda asociada al garzón que atendió tu mesa.</p>
+        </li>
+        <li>
+          <h3>Boleta por correo</h3>
+          <p>Cada persona recibe la boleta de su pago, no la de toda la mesa.</p>
+        </li>
+        <li>
+          <h3>Opinión sin fricción</h3>
+          <p>Al terminar puedes dejar tu evaluación. Si fue buena, te facilita publicarla como reseña en Google. Los comentarios llegan en privado a la administración.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section wrap" id="restaurantes">
+      <div class="split-head">
+        <h2>Toda la sala a la vista</h2>
+        <p>El restaurante opera desde un panel conectado a su sistema de ventas (POS). Toca una mesa para ver cómo responde.</p>
+      </div>
+
+      <div class="ops">
+        <div class="floor" aria-labelledby="floor-title">
+          <div class="floor-top">
+            <h3 id="floor-title">Mapa de sala</h3>
+            <ul class="legend" aria-label="Leyenda">
+              <li><i class="sw sw-free"></i>Libre</li>
+              <li><i class="sw sw-pending"></i>Por pagar</li>
+              <li><i class="sw sw-paid"></i>Pagada</li>
+            </ul>
+          </div>
+          <div class="tables" id="tables"></div>
+          <p class="floor-note" id="floor-note" aria-live="polite">Toca una mesa para ver su estado.</p>
+        </div>
+
+        <ul class="panel-list">
+          <li>
+            <h3>Sin mesas cerradas a medias</h3>
+            <p>El panel no deja cerrar una mesa mientras tenga saldo pendiente.</p>
+          </li>
+          <li>
+            <h3>Cada pago queda registrado</h3>
+            <p>Ves quién pagó qué parte, con qué medio y a qué hora.</p>
+          </li>
+          <li>
+            <h3>Propinas por garzón y turno</h3>
+            <p>Se consolidan solas, listas para el cierre del turno.</p>
+          </li>
+          <li>
+            <h3>Métricas de venta</h3>
+            <p>Revisa cómo va el día, qué platos se piden más y cómo califican los clientes.</p>
+          </li>
+          <li>
+            <h3>Carta digital al instante</h3>
+            <p>Si se acaba un producto, lo ocultas y deja de aparecer en todas las mesas.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="closing wrap">
+      <p>Pagar la cuenta no debería tomar más tiempo que pedirla.</p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <a class="wordmark small" href="#inicio" aria-label="split, volver arriba">spl<span class="dotless">ı</span>t</a>
+      <p>Pide. Paga. Divide.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
