@@ -544,3 +544,25 @@ h3 { font-weight: 700; font-size: 1.1rem; line-height: 1.3; letter-spacing: -0.0
   .modes article + article { border-left: 0; border-top: 1px solid var(--line); }
   .bar nav a:nth-child(2) { display: none; }
 }
+
+
+/* Landing page: four payment modes */
+.demo [hidden] { display:none !important; }
+.demo:not([data-mode="mine"]) .fraction-panel { display:none; }
+.fraction-panel { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:8px; margin-top:-1px; padding:12px; background:var(--lav); border-radius:0 0 12px 12px; }
+.fraction-panel label { display:grid; gap:4px; font-size:.8rem; font-weight:600; color:var(--muted); }
+.fraction-panel select, .tip-edit select { font:inherit; color:var(--ink); background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:8px; width:100%; }
+.fraction-total { grid-column:1/-1; font-size:.9rem; text-align:right; color:var(--purple-deep); }
+.free-row { margin-top:16px; display:grid; gap:6px; font-weight:600; }
+.free-row small { color:var(--muted); font-weight:400; }
+.currency-field { display:flex; align-items:center; gap:8px; padding:10px 12px; border:1px solid var(--line); border-radius:12px; }
+.currency-field input { min-width:0; width:100%; border:0; background:transparent; font:inherit; color:var(--ink); }
+.invite-note { background:var(--lav); color:var(--purple-deep); padding:12px; border-radius:12px; margin-top:16px; font-size:.9rem; }
+.tip-summary { display:grid; gap:8px; margin-top:18px; }
+.tip-line { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:.9rem; }
+.tip-line span { color:var(--muted); }
+.tip-edit { font-size:.8rem; color:var(--muted); }
+.tip-edit summary { text-decoration:underline; cursor:pointer; width:fit-content; padding:5px 0; margin-left:auto; }
+.tip-edit label { display:block; margin-bottom:4px; }
+.demo .seg { min-height:44px; }
+@media (max-width:420px){ .demo .seg { padding:9px 5px; font-size:.85rem; } }
