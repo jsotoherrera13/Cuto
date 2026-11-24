@@ -7,121 +7,76 @@
 
   /* ---------- Demo de la cuenta ---------- */
 
-  var TOTAL = 47400;
-
-  // "shared" = entre cuántas personas se fracciona el plato
-  var DISHES = [
-    { name: "Hamburguesa Clásica", price: 11900, shared: 1 },
-    { name: "Hamburguesa Clásica", price: 11900, shared: 1 },
-    { name: "Papas Trufadas", price: 8900, shared: 2, note: "Para compartir, se fracciona en 2" },
-    { name: "Limonada de menta", price: 3900, shared: 1 },
-    { name: "Limonada de menta", price: 3900, shared: 1 },
-    { name: "Brownie con Helado", price: 6900, shared: 1 }
+  const DISHES = [
+    {name:"Hamburguesa Clásica",price:11900},{name:"Hamburguesa Clásica",price:11900},
+    {name:"Papas Trufadas",price:8900},{name:"Limonada de menta",price:3900},
+    {name:"Limonada de menta",price:3900},{name:"Brownie con Helado",price:6900}
   ];
-
-  var demo = document.getElementById("demo");
-  if (demo) {
-    var list = document.getElementById("dishes");
-    var peopleEl = document.getElementById("people");
-    var tipBox = document.getElementById("tip");
-    var tipAmount = document.getElementById("tip-amount");
-    var partEl = document.getElementById("part");
-    var payBtn = document.getElementById("pay");
-    var segs = demo.querySelectorAll(".seg");
-
-    var state = { mode: "equal", people: 4, picked: {} };
-    var payTimer = null;
-
-    DISHES.forEach(function (d, i) {
-      var li = document.createElement("li");
-      var label = document.createElement("label");
-      label.className = "dish";
-
-      var input = document.createElement("input");
-      input.type = "checkbox";
-      input.setAttribute("aria-label", "Incluir " + d.name + " en mi parte");
-      input.addEventListener("change", function () {
-        state.picked[i] = input.checked;
-        render();
-      });
-
-      var name = document.createElement("span");
-      name.className = "dish-name";
-      name.textContent = d.name;
-      if (d.note) {
-        var small = document.createElement("small");
-        small.textContent = d.note;
-        name.appendChild(small);
-      }
-
-      var price = document.createElement("span");
-      price.className = "dish-price";
-      price.textContent = fmt(d.price);
-
-      label.appendChild(input);
-      label.appendChild(name);
-      label.appendChild(price);
-      li.appendChild(label);
-      list.appendChild(li);
-    });
-
-    function baseAmount() {
-      if (state.mode === "equal") return TOTAL / state.people;
-      return DISHES.reduce(function (sum, d, i) {
-        return state.picked[i] ? sum + d.price / d.shared : sum;
-      }, 0);
+  const TOTAL=DISHES.reduce((sum,d)=>sum+d.price,0);
+  const get=id=>document.getElementById(id);
+  function calculate(state){
+    if(state.mode==="all")return TOTAL;
+    if(state.mode==="free")return Math.max(0,Math.min(TOTAL,Math.round(Number(state.free)||0)));
+    if(state.mode==="mine")return DISHES.reduce((sum,d,i)=>{const p=state.picked[i];return sum+(p?Math.round(d.price*p.take/p.of):0)},0);
+    return Math.round(TOTAL/state.people);
+  }
+  const demo=get("demo");
+  if(demo){
+    const list=get("dishes"),pay=get("pay"),state={mode:"equal",people:4,picked:{},free:0,tip:10};
+    const buttons=Array.from(demo.querySelectorAll(".seg"));
+    let timer=null;
+    const controls=[];
+    function create(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e}
+    function select(label,from,to,value,onchange){
+      const el=create("select");el.setAttribute("aria-label",label);
+      for(let n=from;n<=to;n++){const o=create("option","",String(n));o.value=String(n);el.append(o)}
+      el.value=String(value);el.addEventListener("change",()=>onchange(Number(el.value)));return el
     }
-
-    function render() {
-      var base = baseAmount();
-      var tip = tipBox.checked ? Math.round(base * 0.1) : 0;
-      var total = Math.round(base) + tip;
-
-      peopleEl.textContent = state.people;
-      tipAmount.textContent = fmt(tip);
-      partEl.textContent = fmt(total);
-
-      if (!payBtn.classList.contains("is-done")) {
-        payBtn.textContent = total > 0 ? "Pagar " + fmt(total) : "Marca lo que consumiste";
-        payBtn.disabled = total <= 0;
-      }
+    DISHES.forEach((d,i)=>{
+      const li=create("li"),label=create("label","dish"),box=create("input"),name=create("span","dish-name",d.name),price=create("span","dish-price",fmt(d.price)),fraction=create("div","fraction-panel");
+      box.type="checkbox";box.setAttribute("aria-label","Seleccionar "+d.name+" "+(i+1));
+      box.addEventListener("change",()=>{if(box.checked)state.picked[i]={of:1,take:1};else delete state.picked[i];updateFraction(i);render()});
+      label.append(box,name,price);li.append(label,fraction);list.append(li);
+      controls.push({fraction,box});
+    });
+    function updateFraction(i){
+      const p=state.picked[i],f=controls[i].fraction;
+      f.replaceChildren();f.hidden=!p;
+      if(!p)return;
+      const totalLabel=create("label","","Dividir en");
+      const of=select("Fracciones totales de "+DISHES[i].name,1,8,p.of,n=>{p.of=n;p.take=1;updateFraction(i);render()});
+      totalLabel.append(of);
+      const takeLabel=create("label","","Fracciones que pago");
+      const take=select("Mis fracciones de "+DISHES[i].name,1,p.of,p.take,n=>{p.take=n;updateFraction(i);render()});
+      takeLabel.append(take);f.append(totalLabel,takeLabel,create("strong","fraction-total","Tu parte: "+fmt(Math.round(DISHES[i].price*p.take/p.of))));
     }
-
-    segs.forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        state.mode = btn.getAttribute("data-mode");
-        demo.setAttribute("data-mode", state.mode);
-        segs.forEach(function (s) {
-          var on = s === btn;
-          s.classList.toggle("is-on", on);
-          s.setAttribute("aria-pressed", on ? "true" : "false");
-        });
-        render();
-      });
-    });
-
-    document.getElementById("minus").addEventListener("click", function () {
-      if (state.people > 1) { state.people -= 1; render(); }
-    });
-
-    document.getElementById("plus").addEventListener("click", function () {
-      if (state.people < 12) { state.people += 1; render(); }
-    });
-
-    tipBox.addEventListener("change", render);
-
-    payBtn.addEventListener("click", function () {
-      if (payBtn.disabled) return;
-      payBtn.classList.add("is-done");
-      payBtn.textContent = "¡Pago realizado!";
-      clearTimeout(payTimer);
-      payTimer = setTimeout(function () {
-        payBtn.classList.remove("is-done");
-        render();
-      }, 2200);
-    });
-
-    render();
+    function render(){
+      const base=calculate(state),tip=Math.round(base*state.tip/100),total=base+tip;
+      get("demo-full").textContent=fmt(TOTAL);
+      get("people").textContent=state.people;
+      get("base-amount").textContent=fmt(base);
+      get("tip-label").textContent="Propina voluntaria ("+state.tip+"%)";
+      get("tip-amount").textContent=fmt(tip);
+      get("part").textContent=fmt(total);
+      get("free-row").hidden=state.mode!=="free";
+      get("stepper-row").hidden=state.mode!=="equal";
+      get("invite-note").hidden=state.mode!=="all";
+      pay.textContent=total>0?"Simular pago "+fmt(total):"Selecciona un consumo o monto";
+      pay.disabled=total<=0;
+    }
+    function refresh(){clearTimeout(timer);pay.classList.remove("is-done");render()}
+    buttons.forEach(btn=>btn.addEventListener("click",()=>{
+      state.mode=btn.dataset.mode;demo.dataset.mode=state.mode;
+      buttons.forEach(b=>{b.classList.toggle("is-on",b===btn);b.setAttribute("aria-pressed",String(b===btn))});
+      refresh();
+    }));
+    get("minus").addEventListener("click",()=>{state.people=Math.max(1,state.people-1);refresh()});
+    get("plus").addEventListener("click",()=>{state.people=Math.min(20,state.people+1);refresh()});
+    get("free-amount").addEventListener("input",e=>{state.free=e.target.value;refresh()});
+    get("free-amount").addEventListener("change",e=>{state.free=Math.max(0,Math.min(TOTAL,Math.round(Number(e.target.value)||0)));e.target.value=state.free;refresh()});
+    get("tip-rate").addEventListener("change",e=>{state.tip=Number(e.target.value);refresh()});
+    pay.addEventListener("click",()=>{if(pay.disabled)return;pay.classList.add("is-done");pay.textContent="¡Pago simulado realizado!";pay.disabled=true;clearTimeout(timer);timer=setTimeout(refresh,2200)});
+    controls.forEach((_,i)=>updateFraction(i));render();
   }
 
   /* ---------- Mapa de sala ---------- */
